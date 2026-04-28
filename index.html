@@ -1,62 +1,159 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Barangay Certificate Generator</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        input, button { padding: 8px; margin: 5px; }
-        .certificate {
-            border: 2px solid black;
-            padding: 20px;
-            margin-top: 20px;
-            display: none;
-        }
-    </style>
+<title>Barangay Certificate System</title>
+
+<style>
+body { font-family: Arial; padding: 20px; }
+input, select, button { padding: 8px; margin: 5px; }
+
+.certificate {
+    border: 2px solid black;
+    padding: 30px;
+    margin-top: 20px;
+    display: none;
+}
+.center { text-align: center; }
+</style>
+
 </head>
 
 <body>
 
-<h2>Barangay Certificate Generator</h2>
+<h2>Barangay San Eustacio Certificate System</h2>
 
-<label>Full Name:</label><br>
-<input type="text" id="name"><br>
+<select id="type">
+<option value="residency">Certificate of Residency</option>
+<option value="clearance">Barangay Clearance</option>
+<option value="indigency">Certificate of Indigency</option>
+<option value="goodmoral">Good Moral</option>
+<option value="barangaycert">Barangay Certificate</option>
+<option value="nonres">Non-Residence</option>
+<option value="jobseeker">First Time Jobseeker</option>
+<option value="senior">Senior Citizen</option>
+<option value="solo">Solo Parent</option>
+<option value="lowincome">Low Income</option>
+<option value="cohab">Co-Habitation</option>
+<option value="pwd">PWD</option>
+<option value="special">Special Purpose</option>
+</select><br>
 
-<label>Address:</label><br>
-<input type="text" id="address"><br>
+<input type="text" id="name" placeholder="Full Name"><br>
+<input type="text" id="name2" placeholder="Second Name (for cohabitation only)"><br>
+<input type="text" id="address" placeholder="Address"><br>
+<input type="text" id="purpose" placeholder="Purpose"><br>
+<input type="text" id="years" placeholder="Years/Months (Residency only)"><br>
+<input type="text" id="birth" placeholder="Birthdate (Senior only)"><br>
 
-<button onclick="generateCert()">Generate Certificate</button>
+<button onclick="generate()">Generate</button>
 
 <div class="certificate" id="cert">
-    <h2 style="text-align:center;">Republic of the Philippines</h2>
-    <h3 style="text-align:center;">Barangay San Isidro</h3>
 
-    <p>This is to certify that <b id="cname"></b>, 
-    residing at <b id="caddress"></b>, 
-    is a bonafide resident of this barangay.</p>
+<div class="center">
+<h3>Republic of the Philippines</h3>
+<h3>Barangay San Eustacio</h3>
+<h3 id="title"></h3>
+</div>
 
-    <p>Issued this <b id="cdate"></b>.</p>
+<p id="content"></p>
 
-    <br><br>
-    <p>__________________________</p>
-    <p>Punong Barangay</p>
+<p>Issued this <b id="date"></b> at Barangay San Eustacio, Aliaga, Nueva Ecija.</p>
+
+<br><br>
+<p>__________________________</p>
+<p>ANGELITO S. SARMIENTO<br>Punong Barangay</p>
+
 </div>
 
 <br>
 <button onclick="window.print()">Print / Save as PDF</button>
 
 <script>
-function generateCert() {
-    var name = document.getElementById("name").value;
-    var address = document.getElementById("address").value;
+function generate(){
 
-    var today = new Date();
-    var date = today.toLocaleDateString();
+let type = document.getElementById("type").value;
+let name = document.getElementById("name").value;
+let name2 = document.getElementById("name2").value;
+let address = document.getElementById("address").value;
+let purpose = document.getElementById("purpose").value;
+let years = document.getElementById("years").value;
+let birth = document.getElementById("birth").value;
 
-    document.getElementById("cname").innerText = name;
-    document.getElementById("caddress").innerText = address;
-    document.getElementById("cdate").innerText = date;
+let today = new Date().toLocaleDateString();
 
-    document.getElementById("cert").style.display = "block";
+let title = "";
+let content = "";
+
+if(type=="residency"){
+title="CERTIFICATE OF RESIDENCY";
+content = name+" is a bonafide resident of Barangay San Eustacio residing at "+address+" for "+years+". Issued for "+purpose+".";
+}
+
+if(type=="clearance"){
+title="BARANGAY CLEARANCE";
+content = name+" is a resident of good moral character with no derogatory record. Issued for "+purpose+".";
+}
+
+if(type=="indigency"){
+title="CERTIFICATE OF INDIGENCY";
+content = name+" is an indigent resident with limited financial capacity. Issued for "+purpose+".";
+}
+
+if(type=="goodmoral"){
+title="GOOD MORAL CERTIFICATE";
+content = name+" is a person of good moral character and has no pending case.";
+}
+
+if(type=="barangaycert"){
+title="BARANGAY CERTIFICATE";
+content = name+" is a resident in good standing. Issued for "+purpose+".";
+}
+
+if(type=="nonres"){
+title="NON-RESIDENCY CERTIFICATE";
+content = name+" is NOT a resident of Barangay San Eustacio.";
+}
+
+if(type=="jobseeker"){
+title="FIRST TIME JOBSEEKER CERTIFICATE";
+content = name+" is a first-time jobseeker with no prior employment.";
+}
+
+if(type=="senior"){
+title="SENIOR CITIZEN CERTIFICATION";
+content = name+" born on "+birth+" is a recognized senior citizen.";
+}
+
+if(type=="solo"){
+title="SOLO PARENT CERTIFICATION";
+content = name+" is a recognized solo parent.";
+}
+
+if(type=="lowincome"){
+title="LOW INCOME CERTIFICATE";
+content = name+" belongs to the low-income sector.";
+}
+
+if(type=="cohab"){
+title="CO-HABITATION CERTIFICATE";
+content = name+" and "+name2+" are living together as partners.";
+}
+
+if(type=="pwd"){
+title="PWD CERTIFICATE";
+content = name+" is a recognized person with disability.";
+}
+
+if(type=="special"){
+title="BARANGAY CERTIFICATE (SPECIAL PURPOSE)";
+content = name+" is a resident in good standing. Issued for special purpose.";
+}
+
+document.getElementById("title").innerText = title;
+document.getElementById("content").innerText = content;
+document.getElementById("date").innerText = today;
+
+document.getElementById("cert").style.display="block";
 }
 </script>
 
