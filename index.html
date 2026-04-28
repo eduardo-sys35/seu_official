@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barangay Certificate Generator</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, button { padding: 8px; margin: 5px; }
+        .certificate {
+            border: 2px solid black;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Barangay Certificate Generator</h2>
+
+<label>Full Name:</label><br>
+<input type="text" id="name"><br>
+
+<label>Address:</label><br>
+<input type="text" id="address"><br>
+
+<button onclick="generateCert()">Generate Certificate</button>
+
+<div class="certificate" id="cert">
+    <h2 style="text-align:center;">Republic of the Philippines</h2>
+    <h3 style="text-align:center;">Barangay San Isidro</h3>
+
+    <p>This is to certify that <b id="cname"></b>, 
+    residing at <b id="caddress"></b>, 
+    is a bonafide resident of this barangay.</p>
+
+    <p>Issued this <b id="cdate"></b>.</p>
+
+    <br><br>
+    <p>__________________________</p>
+    <p>Punong Barangay</p>
+</div>
+
+<br>
+<button onclick="window.print()">Print / Save as PDF</button>
+
+<script>
+function generateCert() {
+    var name = document.getElementById("name").value;
+    var address = document.getElementById("address").value;
+
+    var today = new Date();
+    var date = today.toLocaleDateString();
+
+    document.getElementById("cname").innerText = name;
+    document.getElementById("caddress").innerText = address;
+    document.getElementById("cdate").innerText = date;
+
+    document.getElementById("cert").style.display = "block";
+}
+</script>
+
+</body>
+</html>
